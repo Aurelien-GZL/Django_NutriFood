@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nutrifood',
         'USER': 'aurelien',
-        #'PASSWORD': '',
+        'PASSWORD': 'aurelien',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
