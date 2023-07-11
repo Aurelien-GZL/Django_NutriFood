@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Detail</title>
+</head>
+<body>
+<!--
+Simple curly brackets are used for template tags and filters.
+They provide additional functionality, such as control structures (if statements, loops),
+filtering data, or executing specific template-related tasks.
+-->
+{% if product_all %}
+    <ul>
+    {% for product in product_all %}
+        <li><p> {{ product.id }}: {{ product.product_name }}</p></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No product in database.</p>
+{% endif %}
+</body>
