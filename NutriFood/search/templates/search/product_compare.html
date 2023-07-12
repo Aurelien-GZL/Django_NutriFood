@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Compare</title>
+</head>
+<body>
+    <h1>Select a product</h1>
+    <!--
+    # Select a product category from the DB
+    # Select a product name based on category
+    # Display select product data
+    # Provide a list of 5 alternative in the same category from views
+
+    -->
+
+    <!-- Refer to URL product compare in search application => be sure to name application in urls.py of the app -->
+    <form action="{% url 'search:product_compare' %}" method="post" id="product-compare-form">
+        <!-- (Cross-Site Request Forgery) token => security measure to protect against malicious form submissions -->
+        {% csrf_token %}
+        <fieldset>
+            <legend><h1>Select category and product</h1></legend>
+            <!-- onchange event allow to trigger a form submit to get the product names -->
+            <select name="category" id="category-select" onchange="this.form.submit()">
+                {% for category in distinct_categories %}
+                <!--
+                value="{{ category.category }}": The value attribute specifies the value that will be submitted to the server when this option is selected
+
+                category.category: is the actual display text for the category
+                {% if selected_category == category.category %} selected {% endif %}: selected value persists
+                -->
+                <option value="{{ category.category }}" {% if selected_category == category.category %} selected {% endif %}>
+                    {{ category.category }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <select name="product_name" id="product-select">
+                {% if selected_category %}
+                    {% for product in related_products %}
+                    <option value="{{ product.product_name }}" {% if selected_product == product.product_name %} selected {% endif %}>
+                        {{ product.product_name }}
+                    </option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </fieldset>
+        <br>
+        <input type="submit" value="Search">
+    </form>
+
+    <br>
+    {% if selected_product %}
+    <p>Product ID: {{ product_info.id }}</p>
+    <p>Category: {{ product_info.category }}</p>
+    <p>Brand: {{ product_info.brand }}</p>
+    <p>Nutriscore Grade: {{ product_info.nutriscore_grade }}</p>
+    <p>Nutriscore Score: {{ product_info.nutriscore_score }}</p>
+    <p>Product Name: {{ product_info.product_name }}</p>
+    {% endif %}
+    <br>
+
+    {% if related_products %}
+    <h2>Top 5 alternative products with a better nutriscore:</h2>
+    <ul>
+        {% for product in alternative_products %}
+            <li>
+                <p>Product ID: {{ product.id }} /
+                    Category: {{ product.category }} /
+                    Brand: {{ product.brand }} /
+                    Nutriscore Grade: {{ product.nutriscore_grade }} /
+                    Nutriscore Score: {{ product.nutriscore_score }} /
+                    Product Name: {{ product.product_name }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+
+</body>
