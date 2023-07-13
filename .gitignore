@@ -1,5 +1,5 @@
 # Project folders to ignore
-.idea/
+/.idea/
 venv/
 **/__pycache__/
 __pycache__
