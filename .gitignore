@@ -1,0 +1,11 @@
+# Project folders to ignore
+.idea/
+venv/
+**/__pycache__/
+__pycache__
+
+# Project files to ignore 
+*.sqlite3
+*.env
+*.pyc
+prod-ca-2021.crt

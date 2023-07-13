@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-6lej-s)u59@7x7!sx9&%k4js0vwk9(p(p!v*s-tk)u8(-6ower'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,14 +82,24 @@ WSGI_APPLICATION = 'NutriFood.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nutrifood',
-        'USER': 'aurelien',
-        'PASSWORD': 'aurelien',
-        'HOST': '127.0.0.1',
+        'NAME': env('DATABASE_NAME_DEFAULT'),
+        'USER': env('DATABASE_USER_DEFAULT'),
+        'PASSWORD': env('DATABASE_PASS_DEFAULT'),
+        'HOST': env('DATABASE_HOST_DEFAULT'),
         'PORT': '5432',
-    }
+    },
+    'remote': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('DATABASE_NAME_REMOTE'),
+        'USER': env('DATABASE_USER_REMOTE'),
+        'PASSWORD': env('DATABASE_PASS_REMOTE'),
+        'HOST': env('DATABASE_HOST_REMOTE'),
+        'PORT': '5432',
+        'CERT': env('DATABASE_CERT_REMOTE')
+    },
 }
 
+DATABASE_ROUTERS = ['NutriFood.routers.CustomRouter']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
